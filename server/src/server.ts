@@ -3,6 +3,9 @@ import express from 'express'
 import cors from "cors"
 
 import authRouter from "./routes/auth"
+import userRouter from "./routes/user"
+import novelRouter from "./routes/novel"
+import testRouter from "./routes/test"
 
 
 const app = express()
@@ -16,6 +19,9 @@ const main = async () => {
 
     // Routes
     app.use("/api/auth", authRouter);
+    app.use("/api/users", userRouter);
+    app.use("/api/novels", novelRouter);
+    app.use("/api/tests", testRouter);
 
 
     app.listen(PORT, () => {

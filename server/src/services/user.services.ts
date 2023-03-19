@@ -1,61 +1,103 @@
 import bcrypt from "bcryptjs";
+import { UserType } from "../types";
 
 import connectMySQL from "../library/connectMySQL";
 
-export const checkUserCreatedHandle = ({ username, email }: any) => {
-    return new Promise((resolve, reject) => {
-        const qGetUser =
-            "SELECT username FROM USERS WHERE username = ? OR email = ?";
-        connectMySQL.query(qGetUser, [username, email], (error, data: any) => {
-            if (error) {
-                reject({
-                    success: false,
-                    code: 500,
-                    message: "Create User Error | Check User",
-                    error: error,
-                });
-            } else {
-                if (data.length) {
-                    resolve({
-                        success: false,
-                        code: 400,
-                        message: "Existing User",
-                    });
-                } else {
-                    resolve({
-                        success: true,
-                        message: "User not found",
-                    });
-                }
-            }
-        });
-    });
+
+export const getUserByUsernameEmailHandle = async ({ username, email }: any) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qGetUser = `
+            SELECT userId FROM USERS
+            WHERE username = ? OR email = ?
+        `;
+        const [rows] = await connection.query(qGetUser, [username, email]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
 };
 
-export const createUserHandle = ({ name, username, email, password }: any) => {
-    return new Promise((resolve, reject) => {
+export const createUserHandle = async ({ name, username, email, password }: any) => {
+    try {
+        const connection = await connectMySQL();
+
         // Hash password
         const hashPassword = bcrypt.hashSync(password, 10);
         const valuesCreateUser = [name, username, email, hashPassword];
 
-        const qCreateUser =
-            "INSERT INTO USERS(`name`, `username`, `email`, `password`) VALUES (?)";
+        const qCreateUser = `
+            INSERT INTO USERS(name, username, email, password)
+            VALUES (?)
+        `
+        const [rows] = await connection.query(qCreateUser, [valuesCreateUser]);
 
-        connectMySQL.query(qCreateUser, [valuesCreateUser], (error, data) => {
-            if (error) {
-                reject({
-                    success: false,
-                    code: 400,
-                    message: "Create User Error | Create User",
-                    error: error,
-                });
-            } else {
-                resolve({
-                    success: true,
-                    message: "Register successful",
-                    data: data,
-                });
-            }
-        });
-    });
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
 };
+
+export const getUserByAccoutHandle = async (accout : string) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qGetUser = accout.includes("@")
+        ? "SELECT userId, password FROM USERS WHERE email = ?"
+        : "SELECT userId, password FROM USERS WHERE username = ?"
+
+        const [rows] = await connection.query(qGetUser, [accout]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
+}
+
+export const getUserByUsernameHandle = async (username : string) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qGetUser = `
+            SELECT userId, username, email, description, createAt FROM USERS
+            WHERE username = ?
+        `
+
+        const [rows] = await connection.query(qGetUser, [username]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
+}
+
+export const getUserByIdHandle = async (userId : number) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qGetUser = `
+            SELECT userId, username, email, description, createAt FROM USERS 
+            WHERE userId = ?
+        `
+
+        const [rows] = await connection.query(qGetUser, [userId]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
+
+}
+
