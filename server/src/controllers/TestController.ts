@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { getUserByUsernameEmailHandle, getUserByIdHandle, getUserByUsernameHandle, createUserHandle } from "../services/user.services";
-import { testDemoHandle } from "../services/test.services";
+import { createUserHandle } from "../services/user.services";
+// import { testDemoHandle } from "../services/test.services";
 
-// Create Novel By Data | /api/tests/demo
-export const testDemo = async (req: Request, res: Response) => {
+// // Create Novel By Data | /api/tests/demo
+export const testDemo = async (_req: Request, res: Response) => {
     try {
         const users : any = await createUserHandle({ username: "5", email: "5", password: "5" });
         if(!users) {

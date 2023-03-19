@@ -6,7 +6,7 @@ export const connectUser = async (_req: Request, res: Response) => {
     try {
         return res.json({
             success: true,
-            userId: res.locals.user.userId
+            user: res.locals.user
         })
     } catch (error) {
         return res.status(500).json({

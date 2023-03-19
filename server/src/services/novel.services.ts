@@ -4,7 +4,7 @@ import * as cheerio from "cheerio";
 
 import connectMySQL from "../library/connectMySQL";
 import { convertTextToSlug } from "../utils/convertTextToSlug";
-import { uploadThumbnailNovelByUrlHandle } from "./image.services";
+// import { uploadThumbnailNovelByUrlHandle } from "./image.services";
 
 export const createNovelByDataHandle = async (data : any, userId : any) => {
     try {

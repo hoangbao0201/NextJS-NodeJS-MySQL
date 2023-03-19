@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import { UserType } from "../types";
 
 import connectMySQL from "../library/connectMySQL";
 

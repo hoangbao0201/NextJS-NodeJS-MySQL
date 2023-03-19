@@ -7,10 +7,11 @@ import { connectUser, getUserById, getUserByUsername } from "../controllers/User
 
 
 
-router.get("/", verifyToken, connectUser);
 
 router.get("/id/:id", getUserById)
 router.get("/username/:username", getUserByUsername)
+
+router.get("/", verifyToken, connectUser);
 
 
 
