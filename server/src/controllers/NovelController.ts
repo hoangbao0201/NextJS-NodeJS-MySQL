@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createNovelByDataHandle, getDataNovelByUrlMTCHandle, getNovelByTitleHandle, getNovelByPageHandle } from "../services/novel.services";
+import { createNovelByDataHandle, getDataNovelByUrlMTCHandle, getNovelByTitleHandle, getNovelByPageHandle, getNovelBySlugHandle } from "../services/novel.services";
 
 // Create Novel By Data | /api/novels/create/data
 export const createNovelByData = async (req: Request, res: Response) => {
@@ -62,14 +62,6 @@ export const createNovelByUrl = async (req: Request, res: Response) => {
             })
         }
 
-        const existingNovel : any = await getNovelByTitleHandle(dataNovel.title as string);
-        if(existingNovel.length) {
-            return res.status(400).json({
-                success: true,
-                message: "Novel already exist"
-            })
-        }
-
         const createNovel : any = await createNovelByDataHandle(dataNovel, res.locals.user.userId);
         if(!createNovel) {
             return res.status(400).json({
@@ -81,6 +73,7 @@ export const createNovelByUrl = async (req: Request, res: Response) => {
         return res.json({
             success: true,
             message: "Create novel successful",
+            dataNovel: createNovel
         })
     } catch (error) {
         return res.status(500).json({
@@ -90,7 +83,7 @@ export const createNovelByUrl = async (req: Request, res: Response) => {
     }
 }
 
-// Get Novels By Page | /api/novels/take-page?page=1
+// Get Novels By Page | /api/novels/search-by-page/1
 export const getNovelByPage = async (req: Request, res: Response) => {
     try {
         let { page } : any = req.params
@@ -122,7 +115,7 @@ export const getNovelByPage = async (req: Request, res: Response) => {
     }
 }
 
-// Get Novels By Title | /api/novels/take-title/1
+// Get Novels By Title | /api/novels/search-by-title/1
 export const getNovelByTitle = async (req: Request, res: Response) => {
     try {
         let { title } : any = req.params
@@ -146,6 +139,38 @@ export const getNovelByTitle = async (req: Request, res: Response) => {
             message: "Get novels successful",
             title: title,
             novels: existingNovels
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `Internal server error ${error}`,
+        });
+    }
+}
+
+// Get Novels By Slug | /api/novels/search-by-slug/1
+export const getNovelBySlug = async (req: Request, res: Response) => {
+    try {
+        let { slug } : any = req.params
+        if(!slug) {
+            return res.status(400).json({
+                success: false,
+                message: "Data not found"
+            })
+        }
+        
+        const existingNovel : any = await getNovelBySlugHandle(String(slug));
+        if(!existingNovel.length) {
+            return res.status(400).json({
+                success: false,
+                message: "Get novels error"
+            })
+        }
+
+        return res.json({
+            success: true,
+            message: "Get novels successful",
+            novel: existingNovel[0]
         })
     } catch (error) {
         return res.status(500).json({

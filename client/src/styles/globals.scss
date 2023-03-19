@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&display=swap');
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: currentColor;
+}
+
+body {
+    background-color: #f0f7ff;
+    font-family: 'Source Sans Pro';
+}
+
+// Quill JS
+
+.customize-quill-new-drafts {
+    height: 500px;
+    
+    .ql-container {
+        overflow: hidden;
+        border-radius: 6px;
+        background-color: #ffff;
+    }
+    p {
+        font-size: 15px;
+    }
+
+    .ql-editor.ql-blank::before {
+        font-size: 15px;
+        font-style: normal;
+    }
+}
+
+.customize-quill-new-novel,
+.customize-quill-edit-novel {
+    height: 300px;
+    
+    .ql-container {
+        overflow: hidden;
+        border-radius: 6px;
+        background-color: #ffff;
+    }
+    p {
+        font-size: 15px;
+    }
+
+    .ql-editor.ql-blank::before {
+        font-size: 15px;
+        font-style: normal;
+    }
+}
+
+// Css default
+
+.dev-col-1 {
+    width: 8.333333333333333%;
+}
+.dev-col-2 {
+    width: 16.66666666666667%;
+}
+.dev-col-4 {
+    width: 33.33333333333333%;
+}
+.dev-col-5 {
+    width: 41.66666666666667%;
+}
+.dev-col-6 {
+    width: 50%;
+}
+.dev-col-7 {
+    width: 58.33333333333333%;
+}
+.dev-col-8 {
+    width: 66.66666666666667%;
+}
+.dev-col-10 {
+    width: 83.33333333333333%;
+}

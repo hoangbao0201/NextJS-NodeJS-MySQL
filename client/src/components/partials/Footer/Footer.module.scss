@@ -1,0 +1,38 @@
+.wrapper {
+    width: 100%;
+    // background-color: rgba(51, 34, 0, 0.05);
+    
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff url("/images/footer-bg.png") no-repeat bottom;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .logo {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .description {
+        width: 75%;
+        margin: 25px 0px;
+        text-align: center;
+    }
+    .list-actions {
+        display: flex;
+        flex-wrap: nowrap;
+
+        .link-tab+.link-tab {
+            margin-left: 20px;
+        }
+    }
+}

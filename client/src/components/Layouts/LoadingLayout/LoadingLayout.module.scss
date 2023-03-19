@@ -1,0 +1,30 @@
+$body-bg: #38444d9b;
+$item-bg: #38444d9b;
+$item-border-color: #38444d;
+
+$skeleton-color: lighten($item-bg, 7%);
+$skeleton-border-radius: 3px;
+$skeleton-img-border-radius: .75rem;
+$skeleton-animation-speed: 1s;
+
+.loadingLayout {
+    border-radius: 4px;
+}
+
+.placeholders {
+    background-color: $body-bg;
+    animation: skeleton $skeleton-animation-speed ease-in-out forwards infinite;
+    animation-direction: alternate
+}
+
+@keyframes skeleton {
+    0% {
+        opacity: 0.2;
+        // transform: translateY(6px) scale(0.98);
+    }
+    85%,
+    100% {
+        opacity: 0.8;
+        // transform: translateY(0px) scale(1);
+    }
+}

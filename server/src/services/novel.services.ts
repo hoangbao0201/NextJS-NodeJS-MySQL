@@ -4,14 +4,14 @@ import * as cheerio from "cheerio";
 
 import connectMySQL from "../library/connectMySQL";
 import { convertTextToSlug } from "../utils/convertTextToSlug";
-// import { uploadThumbnailNovelByUrlHandle } from "./image.services";
+import { uploadThumbnailNovelByUrlHandle } from "./image.services";
 
 export const createNovelByDataHandle = async (data : any, userId : any) => {
     try {
         const connection = await connectMySQL();
 
         const qCreateNovel = `
-            INSERT INTO novels(slug, title, description, author, category, personality, scene, classify, viewFrame, userId)
+            INSERT INTO novels(slug, title, thumbnailUrl, thumbnailPublicId, description, author, category, personality, scene, classify, viewFrame, userId)
             VALUES (?)
         `;
 
@@ -20,7 +20,9 @@ export const createNovelByDataHandle = async (data : any, userId : any) => {
         } = data
          
         const hashTitle = convertTextToSlug(title as string)
-        const values = [hashTitle, title, description, author, category, personality, scene, classify, viewFrame, userId]
+        const values = [hashTitle, title, data?.thumbnailUrl || null, data?.thumbnailPublicId || null, description, author, category, personality, scene, classify, viewFrame, userId]
+
+        // return values
 
         const [rows] = await connection.query(qCreateNovel, [values]);
 
@@ -53,15 +55,21 @@ export const getDataNovelByUrlMTCHandle = async (url : string) => {
             return null
         }
 
-        // const urlImage = $1('.nh-thumb--210 img').attr('src');
-        // const thumbnailImage = await uploadThumbnailNovelByUrlHandle(urlImage as string);
+        const checkNovel : any = await getNovelByTitleHandle(dataNovel.title);
+        if(checkNovel.length) {
+            return null
+        }
+
+        const urlImage = $1('.nh-thumb--210 img').attr('src');
+        const thumbnailImage = await uploadThumbnailNovelByUrlHandle(urlImage as string);
+        if(!thumbnailImage) {
+            return null
+        }
 
         return {
             ...dataNovel,
-            // thumbnail: {
-            //     url: thumbnailImage.url || null,
-            //     publicId: thumbnailImage.public_id || null,
-            // },
+            thumbnailUrl: thumbnailImage?.url || null,
+            thumbnailPublicId: thumbnailImage?.public_id || null,
         }
     } catch (error) {
         return null
@@ -73,7 +81,7 @@ export const getNovelByTitleHandle = async (title : any) => {
         const connection = await connectMySQL();
 
         const qGetNovel = `
-            SELECT novelId, title, author, category, personality, scene, classify, viewFrame FROM novels
+            SELECT novelId, slug, title, author, category, personality, scene, classify, viewFrame FROM novels
             WHERE title like ?
             LIMIT 10
         `;
@@ -93,12 +101,31 @@ export const getNovelByPageHandle = async (page : any) => {
         const connection = await connectMySQL();
 
         const qGetNovel = `
-            SELECT novelId, title, author, category, personality, scene, classify, viewFrame FROM novels
+            SELECT novelId, slug, title, thumbnailUrl, thumbnailPublicId, author, category, personality, scene, classify, viewFrame FROM novels
             ORDER BY createAt DESC
             LIMIT 10 OFFSET ?;
         `;
 
         const [rows] = await connection.query(qGetNovel, [(page-1)*10]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
+};
+
+export const getNovelBySlugHandle = async (slug : any) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qGetNovel = `
+            SELECT novelId, slug, title, thumbnailUrl, description, author, category, personality, scene, classify, viewFrame FROM novels
+            WHERE slug = ?
+        `;
+
+        const [rows] = await connection.query(qGetNovel, [slug]);
 
         connection.release();
 

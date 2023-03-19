@@ -1,0 +1,28 @@
+
+
+.content {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px;
+}
+
+.loading {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    vertical-align: text-bottom;
+    border: 0.2em solid #bf2c24;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+}
+
+
+// Keyframe
+
+@keyframes spinner-border {
+    100% {
+        transform: rotate(360deg);
+    }
+}

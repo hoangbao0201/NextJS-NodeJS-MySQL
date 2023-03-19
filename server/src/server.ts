@@ -6,6 +6,7 @@ import authRouter from "./routes/auth"
 import userRouter from "./routes/user"
 import novelRouter from "./routes/novel"
 import testRouter from "./routes/test"
+import chapterRouter from "./routes/chapter"
 
 
 const app = express()
@@ -22,7 +23,7 @@ const main = async () => {
     app.use("/api/users", userRouter);
     app.use("/api/novels", novelRouter);
     app.use("/api/tests", testRouter);
-
+    app.use("/api/chapters", chapterRouter);
 
     app.listen(PORT, () => {
         console.log(`Server started on port ${PORT}`)

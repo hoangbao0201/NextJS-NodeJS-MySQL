@@ -1,0 +1,31 @@
+.head {
+    padding: 0px 15px;
+    margin: 15px 0px;
+    font-weight: 600;
+    font-size: 22px;
+    color: #333;
+}
+
+.list-chapters {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0px 3px;
+}
+
+.item-chap {
+    cursor: pointer;
+    color: #333;
+    width: calc(100% / 3);
+    border-bottom: 1px dotted #ddd;
+
+    .item-text {
+        // display: block;
+        margin: 12px 10px;
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 1;
+    }
+}
