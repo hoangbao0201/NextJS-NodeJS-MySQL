@@ -2,6 +2,7 @@
 
 export interface ChapterType {
     chapterId: string
+    novelSlug: string
     sourceName: string | undefined
     title: string
     chapterNumber: number
@@ -9,6 +10,8 @@ export interface ChapterType {
     view: number
     createdAt: Date
     updatedAt: Date
+    
+    chapterCount: number
 }
 
 export interface ChaptersType extends ChapterType {
@@ -22,7 +25,10 @@ export interface NovelType {
     novelId: string
     slug: string
     title: string
-    chapterCount: number
+
+    totalChapterCount: number
+    newChapterCount: number
+
     description: string
     author: string
     category: string
@@ -43,6 +49,7 @@ export interface NovelType {
 export interface UserType {
     userId: string
     name: string
+    accout: string
     username: string
     description: string
     email: string

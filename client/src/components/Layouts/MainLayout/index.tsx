@@ -4,6 +4,9 @@ import styles from "./MainLayout.module.scss";
 
 import Header from "@/components/partials/Header";
 import Footer from "@/components/partials/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { getAccessToken, removeAccessToken } from "@/utils/cookies";
+import { logoutUserHandle } from "@/redux/userSlice";
 
 // const Header = dynamic(() => import("../../partials/Header"));
 // const Footer = dynamic(() => import("../../partials/Footer"));
@@ -17,40 +20,29 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children, showHeader, showFooter }: MainLayoutProps) => {
-    // const dispatch = useDispatch();
-    // const { currentUser, userLoading, isAuthenticated } = useSelector(
-    //     (state: any) => state.user
-    // );
+    const dispatch = useDispatch();
+    const { currentUser, userLoading, isAuthenticated } = useSelector(
+        (state: any) => state.user
+    );
 
-    // const loadUser = async () => {
-    //     try {
-    //         const token = getAccessToken();
-    //         console.log(token);
-    //         if (!token) {
-    //             dispatch(logoutUserHandle());
-    //             removeAccessToken();
-    //             return;
-    //         } else if (token) {
-    //             const userResponse = await connectUser(token as string);
-    //             if (userResponse?.data.success) {
-    //                 console.log(userResponse.data.user);
-    //                 dispatch(addUserHandle(userResponse.data.user));
-    //                 return;
-    //             }
-    //         }
+    const loadUser = async () => {
+        try {
+            const token = getAccessToken();
+            if (!token) {
+                dispatch(logoutUserHandle());
+                removeAccessToken();
+                return;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    //         dispatch(logoutUserHandle());
-    //         removeAccessToken();
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     if (userLoading) {
-    //         loadUser();
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (userLoading) {
+            loadUser();
+        }
+    }, []);
 
     return (
         <>

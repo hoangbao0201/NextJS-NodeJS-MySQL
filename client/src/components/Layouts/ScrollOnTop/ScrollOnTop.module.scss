@@ -1,0 +1,21 @@
+
+
+.button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+}
+
+.content {
+    padding: 8px;
+    cursor: pointer;
+
+    svg {
+        width: 22px;
+        display: block;
+        fill: #ee2c74;
+    }
+}

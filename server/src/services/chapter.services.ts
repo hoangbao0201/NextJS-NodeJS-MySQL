@@ -5,8 +5,6 @@ import connectMySQL from "../library/connectMySQL";
 
 export const getDataChapterByUrlMTCHandle = async ({ slug, chapterNumber } : any) => {
     try {
-        const connection = await connectMySQL();
-
         // Get Data Chapter
         let urlChapter = `https://metruyencv.com/truyen/${slug}/chuong-${chapterNumber}`
  
@@ -24,23 +22,7 @@ export const getDataChapterByUrlMTCHandle = async ({ slug, chapterNumber } : any
             chapterNumber: Number(chapterNumber),
         }
 
-        // Check novel
-        const qGetNovelBySlug = `
-            SELECT novelId FROM novels
-            WHERE slug = ?
-        `
-        const [rows] : any = await connection.query(qGetNovelBySlug, [slug]);
-        
-        connection.release();
-        
-        if(!rows.length) {
-            return null
-        }
-
-        return {
-            ...dataChapter,
-            novelId: rows[0].novelId,
-        };
+        return dataChapter
 
     } catch (error) {
         return null
@@ -52,21 +34,36 @@ export const createChapterByDataHandle = async (data : any) => {
         const connection = await connectMySQL();
 
         const {
-            novelSlug, title, content, chapterNumber, novelId
+            novelSlug, novelName, title, content, chapterNumber, novelId
         } = data
-
-        // return {
-        //     novelSlug, title, content, chapterNumber, novelId
-        // }
-
+        
         const qCreateChapter = `
-            INSERT INTO chapters(novelSlug, title, content, chapterNumber, novelId)
+            INSERT INTO chapters(novelSlug, novelName, title, content, chapterNumber, novelId)
             VALUES (?)
         `;
 
-        const values = [ novelSlug, title, content, chapterNumber, novelId ]
+        const values = [ novelSlug, novelName, title, content, chapterNumber, novelId ]
 
         const [rows] = await connection.query(qCreateChapter, [values]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return error
+    }
+};
+
+export const getChapterDetailHandle = async ({ slug, chapterNumber } : any) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qCreateChapter = `
+            SELECT chapterId, novelName, novelSlug, title, content, chapterNumber, view, updatedAt, novelId FROM chapters
+            WHERE novelSlug = ? AND chapterNumber = ?
+        `;
+
+        const [rows] = await connection.query(qCreateChapter, [slug, chapterNumber]);
 
         connection.release();
 

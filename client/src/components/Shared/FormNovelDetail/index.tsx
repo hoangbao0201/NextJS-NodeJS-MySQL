@@ -24,8 +24,8 @@ const ContentTab = ({ tab, slug }: ContentTab) => {
         return <p>review</p>;
     }
     if (tab === "chap") {
-        // return <ContentChapters slug={slug}/>;
-        return null;
+        return <ContentChapters slug={slug}/>;
+        // return null;
     }
     if (tab === "comment") {
         return <p>comment</p>;
@@ -72,7 +72,7 @@ const FormNovelDetail: NextPage<FormNovelDetailProps> = ({ novel }) => {
 
                     <div className={cx("grid-number")}>
                         <div className={cx("detail-number", "number-chapter")}>
-                            <div>{0}</div>
+                            <div>{novel.totalChapterCount || "0"}</div>
                             Chương
                         </div>
                         <div
@@ -81,7 +81,7 @@ const FormNovelDetail: NextPage<FormNovelDetailProps> = ({ novel }) => {
                                 "number-chapter-week"
                             )}
                         >
-                            <div>{0}</div>
+                            <div>{novel.newChapterCount || "0"}</div>
                             Chương/tuần
                         </div>
                         <div className={cx("detail-number", "number-reads")}>

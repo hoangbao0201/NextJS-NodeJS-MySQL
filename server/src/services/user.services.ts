@@ -85,7 +85,7 @@ export const getUserByIdHandle = async (userId : number) => {
         const connection = await connectMySQL();
 
         const qGetUser = `
-            SELECT userId, username, email, description, createAt FROM USERS 
+            SELECT userId, name, username, email, description, createdAt FROM USERS 
             WHERE userId = ?
         `
 

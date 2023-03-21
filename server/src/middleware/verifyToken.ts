@@ -37,13 +37,18 @@ export const verifyToken = async (
                 }
 
                 const exitingUser : any = await getUserByIdHandle(user.userId);
-                if(!exitingUser.length) {
+                if(!exitingUser?.length) {
                     res.status(400).json({
-                        success: true,
+                        success: false,
                         message: "Invalid token or user doesn't exist"
                     })
                     return;
                 }
+
+                // res.json({
+                //     user: exitingUser
+                // })
+                // return;
 
                 res.locals.user = exitingUser[0];
                 next();

@@ -96,13 +96,13 @@ export const getNovelByTitleHandle = async (title : any) => {
     }
 };
 
-export const getNovelByPageHandle = async (page : any) => {
+export const getNovelsByPageHandle = async (page : any) => {
     try {
         const connection = await connectMySQL();
 
         const qGetNovel = `
             SELECT novelId, slug, title, thumbnailUrl, thumbnailPublicId, author, category, personality, scene, classify, viewFrame FROM novels
-            ORDER BY createAt DESC
+            ORDER BY createdAt DESC
             LIMIT 10 OFFSET ?;
         `;
 
@@ -120,9 +120,24 @@ export const getNovelBySlugHandle = async (slug : any) => {
     try {
         const connection = await connectMySQL();
 
+
+        // SELECT COUNT(chapters.chapterId) AS chapterCount, novels.novelId, novels.slug, novels.title, novels.thumbnailUrl, novels.description, novels.author, novels.category, novels.personality, novels.scene, novels.classify, viewFrame FROM
+        //     novels 
+        //     LEFT JOIN chapters ON chapters.novelId = novels.novelId 
+        // WHERE novels.slug = ? 
+        // GROUP BY novels.novelId;
         const qGetNovel = `
-            SELECT novelId, slug, title, thumbnailUrl, description, author, category, personality, scene, classify, viewFrame FROM novels
-            WHERE slug = ?
+            SELECT novels.novelId, novels.slug, novels.title, novels.thumbnailUrl, novels.description, novels.author, 
+                novels.category, novels.personality, novels.scene, novels.classify, novels.viewFrame,
+
+                COUNT(IF(chapters.createdAt >= DATE_SUB(NOW(), INTERVAL 1 WEEK), 1, NULL)) as newChapterCount,
+                COUNT(chapters.chapterId) as totalChapterCount
+
+                FROM novels
+                LEFT JOIN chapters ON chapters.novelId = novels.novelId
+
+            WHERE novels.slug = ? 
+            GROUP BY novels.novelId;
         `;
 
         const [rows] = await connection.query(qGetNovel, [slug]);
@@ -135,6 +150,43 @@ export const getNovelBySlugHandle = async (slug : any) => {
     }
 };
 
+export const getNovelsByUserIdHandle = async (userId : any) => {
+    try {
+        const connection = await connectMySQL();
 
+        const qGetNovel = `
+            SELECT novelId, slug, title, author, updatedAt FROM novels
+            WHERE userId = ?
+        `;
+
+        const [rows] = await connection.query(qGetNovel, [userId]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
+};
+
+export const getChaptersNovelBySlugHandle = async (slug : any) => {
+    try {
+        const connection = await connectMySQL();
+
+        const qGetNovel = `
+            SELECT chapterId, novelSlug, title, chapterNumber, view, updatedAt, novelId FROM chapters
+            WHERE novelSlug = ?
+            ORDER BY chapterNumber ASC
+        `;
+
+        const [rows] = await connection.query(qGetNovel, [slug]);
+
+        connection.release();
+
+        return rows
+    } catch (error) {
+        return null
+    }
+};
 
 

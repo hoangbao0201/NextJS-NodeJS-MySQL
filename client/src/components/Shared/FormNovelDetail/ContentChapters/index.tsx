@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import classNames from "classnames/bind";
 
-
 import styles from "./ContentChapters.module.scss";
-import { ChaptersType, ChapterType } from "@/types";
+import { ChapterType } from "@/types";
 import LoadingForm from "@/components/Layouts/LoadingForm";
+import { getChaptersNovelByUrlHandle } from "@/services/chapter.services";
 
 const cx = classNames.bind(styles);
 
@@ -17,17 +17,17 @@ const ContentChapters = ({ slug }: ContentChaptersProps) => {
 
     const [bodyContent, setBodyContent] = useState<ChapterType[] | null>(null)
 
-    // const getListChapters = async () => {
-    //     const chaptersResponse = await getChaptersBySlugHandler(slug as string);
-    //     if (chaptersResponse?.data.success) {
-    //         console.log(chaptersResponse.data.chapters)
-    //         setBodyContent(chaptersResponse.data.chapters)
-    //     }
-    // };
+    const getListChapters = async () => {
+        const chaptersResponse = await getChaptersNovelByUrlHandle(slug as string);
+        if (chaptersResponse?.data.success) {
+            console.log(chaptersResponse.data.chapters)
+            setBodyContent(chaptersResponse.data.chapters)
+        }
+    };
 
-    // useEffect(() => {
-    //     getListChapters();
-    // }, []);
+    useEffect(() => {
+        getListChapters();
+    }, []);
 
     if(!bodyContent) {
         return <LoadingForm />
@@ -36,18 +36,18 @@ const ContentChapters = ({ slug }: ContentChaptersProps) => {
         if(bodyContent) {
             return (
                 <div className={cx("content")}>
-                    {/* <div className={cx("head")}>Danh sách chương</div>
+                    <div className={cx("head")}>Danh sách chương</div>
                     <div className={cx("list-chapters")}>
                         {bodyContent.map((chapter : ChapterType, index) => {
                             return (
-                                <Link key={index} href={`/novel/${bodyContent.slug}/chuong-${chapter.chapterNumber}`} className={cx("item-chap")}>
+                                <Link key={index} href={`/novel/${chapter.novelSlug}/chuong-${chapter.chapterNumber}`} className={cx("item-chap")}>
                                     <span className={cx("item-text")}>
                                         Chương {chapter.chapterNumber}: {chapter.title}
                                     </span>
                                 </Link>
                             )
                         })}
-                    </div> */}
+                    </div>
                 </div>
             );
         }

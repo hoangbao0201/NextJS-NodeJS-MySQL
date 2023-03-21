@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createNovelByDataHandle, getDataNovelByUrlMTCHandle, getNovelByTitleHandle, getNovelByPageHandle, getNovelBySlugHandle } from "../services/novel.services";
+import { createNovelByDataHandle, getDataNovelByUrlMTCHandle, getNovelByTitleHandle, getNovelsByPageHandle, getNovelBySlugHandle, getChaptersNovelBySlugHandle, getNovelsByUserIdHandle } from "../services/novel.services";
 
 // Create Novel By Data | /api/novels/create/data
 export const createNovelByData = async (req: Request, res: Response) => {
@@ -13,7 +13,7 @@ export const createNovelByData = async (req: Request, res: Response) => {
         }
 
         const existingNovel : any = await getNovelByTitleHandle(title as string);
-        if(existingNovel.length) {
+        if(existingNovel?.length) {
             return res.status(400).json({
                 success: true,
                 message: "novel already exist"
@@ -73,7 +73,9 @@ export const createNovelByUrl = async (req: Request, res: Response) => {
         return res.json({
             success: true,
             message: "Create novel successful",
-            dataNovel: createNovel
+            novel: {
+                slug: dataNovel.slug
+            }
         })
     } catch (error) {
         return res.status(500).json({
@@ -84,7 +86,7 @@ export const createNovelByUrl = async (req: Request, res: Response) => {
 }
 
 // Get Novels By Page | /api/novels/search-by-page/1
-export const getNovelByPage = async (req: Request, res: Response) => {
+export const getNovelsByPage = async (req: Request, res: Response) => {
     try {
         let { page } : any = req.params
         page = page || 1;
@@ -92,8 +94,8 @@ export const getNovelByPage = async (req: Request, res: Response) => {
             page = 1
         }
         
-        const existingNovels : any = await getNovelByPageHandle(Number(page));
-        if(!existingNovels.length) {
+        const existingNovels : any = await getNovelsByPageHandle(Number(page));
+        if(!existingNovels?.length) {
             return res.status(400).json({
                 success: false,
                 message: "Get novels error"
@@ -127,7 +129,7 @@ export const getNovelByTitle = async (req: Request, res: Response) => {
         }
         
         const existingNovels : any = await getNovelByTitleHandle(String(title));
-        if(!existingNovels.length) {
+        if(!existingNovels?.length) {
             return res.status(400).json({
                 success: false,
                 message: "Get novels error"
@@ -160,7 +162,7 @@ export const getNovelBySlug = async (req: Request, res: Response) => {
         }
         
         const existingNovel : any = await getNovelBySlugHandle(String(slug));
-        if(!existingNovel.length) {
+        if(!existingNovel?.length) {
             return res.status(400).json({
                 success: false,
                 message: "Get novels error"
@@ -171,6 +173,70 @@ export const getNovelBySlug = async (req: Request, res: Response) => {
             success: true,
             message: "Get novels successful",
             novel: existingNovel[0]
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `Internal server error ${error}`,
+        });
+    }
+}
+
+// Get Novels By Slug | /api/novels/:slug/chapters
+export const getChaptersNovelBySlug = async (req: Request, res: Response) => {
+    try {
+        let { slug } : any = req.params
+        if(!slug) {
+            return res.status(400).json({
+                success: false,
+                message: "Data not found"
+            })
+        }
+        
+        const existingNovel : any = await getChaptersNovelBySlugHandle(String(slug));
+        if(!existingNovel?.length) {
+            return res.status(400).json({
+                success: false,
+                message: "Get chapters novel error"
+            })
+        }
+
+        return res.json({
+            success: true,
+            message: "Get chapters novel successful",
+            chapters: existingNovel
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `Internal server error ${error}`,
+        });
+    }
+}
+
+// Get Novels By Slug | /api/novels/:slug/chapters
+export const getNovelsByUserId = async (req: Request, res: Response) => {
+    try {
+        let { userId } : any = req.params
+        if(!userId || userId != res.locals.user.userId) {
+            return res.status(400).json({
+                success: false,
+                message: "Data not found"
+            })
+        }
+        
+        const existingNovel : any = await getNovelsByUserIdHandle(userId);
+        if(!existingNovel?.length) {
+            return res.status(400).json({
+                success: false,
+                message: "Get chapters novel error"
+            })
+        }
+
+        return res.json({
+            success: true,
+            message: "Get chapters novel successful",
+            chapters: existingNovel
         })
     } catch (error) {
         return res.status(500).json({

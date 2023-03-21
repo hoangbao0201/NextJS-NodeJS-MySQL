@@ -9,13 +9,13 @@ import CardNovel from "@/components/Layouts/CardNovel";
 const cx = classNames.bind(styles);
 
 export interface FormHomeProps {
-    novels?: NovelType[]
+    novels?: NovelType[] | undefined
 }
 
 
 const FormHome = ({ novels } : FormHomeProps) => {
 
-    console.log(novels)
+    // console.log(novels)
 
     return (
         <>

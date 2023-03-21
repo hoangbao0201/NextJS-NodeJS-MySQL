@@ -1,0 +1,92 @@
+
+
+.content {
+    padding: 0px 20px;
+}
+
+.content-head {
+
+}
+
+.chapter-navigation {
+    display: flex;
+    justify-content: space-between;
+
+    .button {
+        display: flex;
+        align-items: center;
+        -webkit-user-select: none;
+        cursor: pointer;
+        min-width: 120px;
+        padding: 10px 15px;
+        border-radius: 999px;
+        border: 1px solid #ccc;
+        background-color: rgba(255, 255, 255, 0.5);
+        
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        svg {
+            width: 8px;
+            display: block;
+        }
+        &.disabled {
+            color: gray;
+            cursor: default;
+            pointer-events: none;
+            text-decoration: none;
+
+            svg {
+                fill: gray;
+            }
+        }
+    }
+    .btn-prev {
+        svg {
+            margin-right: 5px;
+        }
+    }
+    .btn-next {
+        svg {
+            margin-left: 5px;
+        }
+    }
+}
+
+// Detail
+
+.title {
+    margin: 20px 0px;
+    font-size: 28px;
+}
+
+.chapter-detail {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .title-novel {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+
+        svg {
+            width: 14px;
+            margin-right: 10px;
+            // transform: translateY(1px);
+            display: block;
+        }
+    }
+    .createAt-chapter {
+        font-size: 15px;
+    }
+}
+
+// Content text
+
+.content-chapter {
+    font-size: 23px;
+    line-height: 1.5;
+    margin: 60px 0px 20px 0px;
+}

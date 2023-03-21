@@ -2,18 +2,19 @@ import { GetServerSideProps, NextPage } from "next";
 
 import WrapperContent from "@/components/Layouts/WrapperContent";
 import FormChapterDetail from "@/components/Shared/FormChapterDetail";
-import { getChapterBySlugAndNumber, increaseViewChapterBySlugChapterNumber } from "@/services";
-import { ChaptersType } from "@/types";
-import ScrollOnTop from "@/components/Layouts/ScrollOnTop";
+import { ChapterType } from "@/types";
 import dynamic from "next/dynamic";
+import { getChapterDetailHandle, increaseViewChapterHandle } from "@/services/chapter.services";
 
 const ScrollButton = dynamic(() => import("@/components/Layouts/ScrollOnTop"))
 
 export interface ChapterDetailProps {
-    chapter: ChaptersType
+    chapter: any
 }
 
-const ChapterDetail : NextPage<ChapterDetailProps> = ({ chapter }) => {
+const ChapterDetail : NextPage<ChapterDetailProps> = ({chapter}) => {
+
+    console.log(chapter)
 
     return (
         <>
@@ -29,8 +30,8 @@ export const getServerSideProps : GetServerSideProps = async ({ query, res }) =>
     const slug = query.slug as string
     const chapterNumber = query.chapterNumber as string
 
-    const chapterResponse = await getChapterBySlugAndNumber(slug, chapterNumber)
-    increaseViewChapterBySlugChapterNumber(slug, chapterNumber)
+    const chapterResponse = await getChapterDetailHandle(slug, chapterNumber)
+    increaseViewChapterHandle(slug, chapterNumber)
 
     if(!chapterResponse) {
         return {

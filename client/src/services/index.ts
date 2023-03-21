@@ -1,36 +1,33 @@
-import axios from "axios";
-// import { UserType } from "@/types";
-import { axiosClient } from "./axiosClient"
-// import { getAccessToken, removeAccessToken } from "@/utils/cookies";
-// import Cookies from "js-cookie";
+// import axios from "axios";
+// import { axiosClient } from "./axiosClient"
 
-export const getNovelsByPageHandle = async (pageNumber: string) => {
-    if(pageNumber) {
-        return await axiosClient.get(`/api/novels/search-by-page/${pageNumber}`);
-    }
+// export const getNovelsByPageHandle = async (pageNumber: string) => {
+//     if(pageNumber) {
+//         return await axiosClient.get(`/api/novels/search-by-page/${pageNumber}`);
+//     }
 
-    return await axiosClient.get(`/api/novels/search-by-page/1`);
-}
+//     return await axiosClient.get(`/api/novels/search-by-page/1`);
+// }
 
-export const getNovelsByTitleHandle = async (query: string) => {
-    if(!query) {
-        return
-    }
-    const novels = await axios.get(`http://localhost:4000/api/novels/search-by-title/${query}`)
-    if(!novels) {
-        return
-    }
+// export const getNovelsByTitleHandle = async (query: string) => {
+//     if(!query) {
+//         return
+//     }
+//     const novels = await axios.get(`http://localhost:4000/api/novels/search-by-title/${query}`)
+//     if(!novels) {
+//         return
+//     }
 
-    return novels
-}
+//     return novels
+// }
 
-export const getNovelBySlugHandle = async (slug: string) => {
-    if(slug) {
-        return await axiosClient.get(`/api/novels/search-by-slug/${slug}`)
-    }
+// export const getNovelBySlugHandle = async (slug: string) => {
+//     if(slug) {
+//         return await axiosClient.get(`/api/novels/search-by-slug/${slug}`)
+//     }
 
-    return null;
-}
+//     return null;
+// }
 
 // export const getNovelsByUserId = async (userId: string) => {
 
@@ -70,25 +67,6 @@ export const getNovelBySlugHandle = async (slug: string) => {
 //     }
 
 //     return  await axios.post(`http://localhost:4000/api/auth/register`, data)
-// }
-
-// export const connectUser = async (token : string) => {
-//     if(!token) {
-//         return null
-//     }
-
-//     const connectUser = await axios.get("http://localhost:4000/api/auth", {
-//         headers: {
-//             Authorization: `Bearer ${token}`
-//         }
-//     })
-
-//     if(!connectUser.data.success) {
-//         removeAccessToken();
-//         return null;
-//     }
-
-//     return connectUser
 // }
 
 // export const createNovelByUrl = async (url : string) => {

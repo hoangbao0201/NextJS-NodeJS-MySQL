@@ -4,9 +4,9 @@ import WrapperContent from "@/components/Layouts/WrapperContent";
 import FormNovelDetail from "@/components/Shared/FormNovelDetail";
 import { GetServerSideProps } from "next";
 import { NovelType } from "@/types";
-import { getNovelBySlugHandle } from "@/services";
 import { ParsedUrlQuery } from "querystring";
 import Slider from "@/components/partials/Slider";
+import { getNovelBySlugHandle } from "@/services/novel.services";
 
 interface Params extends ParsedUrlQuery {
     slug: string;
@@ -17,6 +17,8 @@ interface NovelDetailProps {
 }
 
 const NovelDetail = ({ novel } : NovelDetailProps) => {
+
+    console.log(novel)
     
     return (
         <>

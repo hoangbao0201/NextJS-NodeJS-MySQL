@@ -10,5 +10,5 @@ export interface UserType {
     description: string
     candy: number
     flower: number
-    createAt: Date
+    createdAt: Date
 }
