@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 
-import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import styles from "./ContentFormSteal.module.scss";
 import { getAccessToken } from "@/utils/cookies";
@@ -12,11 +11,6 @@ import { useRouter } from "next/router";
 const cx = classNames.bind(styles);
 
 export interface ContentFormStealProps {}
-
-const QuillNoSSRWrapper = dynamic(import("react-quill"), {
-    ssr: false,
-    loading: () => <p>Loading ...</p>,
-});
 
 const modules = {
     toolbar: null,
@@ -70,14 +64,16 @@ const ContentFormSteal = () => {
                     console.log(`${novelResponse?.data.novel.slug}/${i}`)
                     const chapterResponse = await createChapterByUrlHandle(`${novelResponse?.data.novel.slug}/${i}` as string, token as string)
 
-                    if(!chapterResponse?.data.success) {
+                    if(chapterResponse?.data.success) {
+                        setDataMessageProgress(value => [ ...value, { id: i+2, message: `Upload Chương ${i} - Thành công` } ])
+                        setProgress(value => value + 1)
+                    }
+                    else {
                         setIsProgress(false);
                         setProgress(0)
-                        router.reload();
                         return
                     }
-                    setDataMessageProgress(value => [ ...value, { id: i+2, message: `Upload Chương ${i} - Thành công` } ])
-                    setProgress(value => value + 1)
+                    
                 }
             }
 
@@ -86,10 +82,10 @@ const ContentFormSteal = () => {
             return
 
         } catch (error) {
-            // setIsProgress(false);
-            // setProgress(0)
-            // console.log(error)
-            router.reload();
+            setIsProgress(false);
+            setProgress(0)
+            console.log(error)
+            // router.reload();
         }
     };
 

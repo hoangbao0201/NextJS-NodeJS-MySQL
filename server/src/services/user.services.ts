@@ -1,11 +1,10 @@
 import bcrypt from "bcryptjs";
-
-import connectMySQL from "../library/connectMySQL";
+import pool from "../library/connectMySQL";
 
 
 export const getUserByUsernameEmailHandle = async ({ username, email }: any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetUser = `
             SELECT userId FROM USERS
@@ -23,7 +22,7 @@ export const getUserByUsernameEmailHandle = async ({ username, email }: any) => 
 
 export const createUserHandle = async ({ name, username, email, password }: any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         // Hash password
         const hashPassword = bcrypt.hashSync(password, 10);
@@ -45,7 +44,7 @@ export const createUserHandle = async ({ name, username, email, password }: any)
 
 export const getUserByAccoutHandle = async (accout : string) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetUser = accout.includes("@")
         ? "SELECT userId, password FROM USERS WHERE email = ?"
@@ -63,7 +62,7 @@ export const getUserByAccoutHandle = async (accout : string) => {
 
 export const getUserByUsernameHandle = async (username : string) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetUser = `
             SELECT userId, username, email, description, createAt FROM USERS
@@ -82,7 +81,7 @@ export const getUserByUsernameHandle = async (username : string) => {
 
 export const getUserByIdHandle = async (userId : number) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetUser = `
             SELECT userId, name, username, email, description, createdAt FROM USERS 

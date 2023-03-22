@@ -1,36 +1,39 @@
-import { GetServerSideProps, NextPage } from "next";
+import { ReactNode } from "react";
+import { NovelType } from "@/types";
+import { GetServerSideProps } from "next";
 
 import FormHome from "@/components/Shared/FormHome";
 import WrapperContent from "@/components/Layouts/WrapperContent";
-import { NovelType } from "@/types";
-import { ReactNode } from "react";
 import MainLayout from "@/components/Layouts/MainLayout";
 import { NextPageWithLayout } from "./_app";
 import { getNovelsByPageHandle } from "@/services/novel.services";
+import Slider from "@/components/partials/Slider";
 
-interface HomeProps {
-    novels?: NovelType[];
+export interface HomeProps {
+    novels?: NovelType[]
+    newNovels?: NovelType[]
 }
 
-const Home: NextPageWithLayout = ({ novels }: HomeProps) => {
-
-    console.log(novels || null)
+const Home: NextPageWithLayout = ({ novels, newNovels }: HomeProps) => {
 
     return (
         <>
-            <WrapperContent>
-                <FormHome novels={novels} />
+            <Slider />
+            <WrapperContent width="1170px" top="translateY(-130px)" borderRadius="8px">
+                <FormHome novels={novels} newNovels={newNovels}/>
             </WrapperContent>
         </>
     );
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const novelResponse = await getNovelsByPageHandle(ctx.query?.page as string || "1");
+    const novelsResponse = await getNovelsByPageHandle(ctx.query?.page as string || "1");
+    const newNovelsResponse = await getNovelsByPageHandle("1");
 
     return {
         props: {
-            novels: novelResponse?.data.novels || null,
+            novels: novelsResponse?.data.novels || null,
+            newNovels: newNovelsResponse?.data.novels || null
         },
     };
 };

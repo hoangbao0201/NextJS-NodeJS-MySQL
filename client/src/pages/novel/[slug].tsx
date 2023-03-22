@@ -62,7 +62,7 @@ export const getServerSideProps : GetServerSideProps = async (ctx) => {
     try {
         const { slug } = ctx.params as Params
 
-        const novelResponse = await getNovelBySlugHandle(slug as string)
+        const novelResponse = await getNovelBySlugHandle(slug as string);
 
         if(novelResponse) {
             return {

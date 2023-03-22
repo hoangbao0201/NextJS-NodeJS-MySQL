@@ -1,14 +1,14 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import pool from "../library/connectMySQL";
 
 
-import connectMySQL from "../library/connectMySQL";
 import { convertTextToSlug } from "../utils/convertTextToSlug";
 import { uploadThumbnailNovelByUrlHandle } from "./image.services";
 
 export const createNovelByDataHandle = async (data : any, userId : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qCreateNovel = `
             INSERT INTO novels(slug, title, thumbnailUrl, thumbnailPublicId, description, author, category, personality, scene, classify, viewFrame, userId)
@@ -78,7 +78,7 @@ export const getDataNovelByUrlMTCHandle = async (url : string) => {
 
 export const getNovelByTitleHandle = async (title : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetNovel = `
             SELECT novelId, slug, title, author, category, personality, scene, classify, viewFrame FROM novels
@@ -98,7 +98,7 @@ export const getNovelByTitleHandle = async (title : any) => {
 
 export const getNovelsByPageHandle = async (page : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetNovel = `
             SELECT novelId, slug, title, thumbnailUrl, thumbnailPublicId, author, category, personality, scene, classify, viewFrame FROM novels
@@ -118,7 +118,7 @@ export const getNovelsByPageHandle = async (page : any) => {
 
 export const getNovelBySlugHandle = async (slug : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
 
         // SELECT COUNT(chapters.chapterId) AS chapterCount, novels.novelId, novels.slug, novels.title, novels.thumbnailUrl, novels.description, novels.author, novels.category, novels.personality, novels.scene, novels.classify, viewFrame FROM
@@ -152,7 +152,7 @@ export const getNovelBySlugHandle = async (slug : any) => {
 
 export const getNovelsByUserIdHandle = async (userId : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetNovel = `
             SELECT novelId, slug, title, author, updatedAt FROM novels
@@ -171,7 +171,7 @@ export const getNovelsByUserIdHandle = async (userId : any) => {
 
 export const getChaptersNovelBySlugHandle = async (slug : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qGetNovel = `
             SELECT chapterId, novelSlug, title, chapterNumber, view, updatedAt, novelId FROM chapters

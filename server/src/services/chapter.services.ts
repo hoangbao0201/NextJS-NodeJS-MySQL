@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-
-import connectMySQL from "../library/connectMySQL";
+import pool from "../library/connectMySQL";
 
 export const getDataChapterByUrlMTCHandle = async ({ slug, chapterNumber } : any) => {
     try {
@@ -31,7 +30,7 @@ export const getDataChapterByUrlMTCHandle = async ({ slug, chapterNumber } : any
 
 export const createChapterByDataHandle = async (data : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const {
             novelSlug, novelName, title, content, chapterNumber, novelId
@@ -56,7 +55,7 @@ export const createChapterByDataHandle = async (data : any) => {
 
 export const getChapterDetailHandle = async ({ slug, chapterNumber } : any) => {
     try {
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qCreateChapter = `
             SELECT chapterId, novelName, novelSlug, title, content, chapterNumber, view, updatedAt, novelId FROM chapters

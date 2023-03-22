@@ -1,0 +1,88 @@
+
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.table-newNovels {
+    border-spacing: 0px;
+    // border-top: 1px solid #eee!important;
+}
+
+.item-name {
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+
+}
+
+.r-table {
+
+    td {
+        padding: 12px;
+    }
+}
+
+.c-title,
+.c-newChapter {
+    width: 25%!important;
+    vertical-align: middle!important;
+}
+
+.item-title,
+.item-newChapter {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    
+    a {
+        // display: block;
+    }
+}
+
+// .list-newNovels {
+    
+//     .table-newNovels {
+//         width: 100%;
+//         border-spacing: 0px;
+//         border-top: 1px solid #eee!important;
+//     }
+//     .c-main {
+//         padding: 12px;
+//     }
+//     .c-titleNovel {
+//         width: 25%;
+//         position: relative;
+//         vertical-align: middle!important;
+
+//         .item-title {
+//             font-size: 15px;
+//             font-weight: 600;
+
+//             display: -webkit-box;
+//             -webkit-line-clamp: 1;
+//             -webkit-box-orient: vertical;
+//             overflow: hidden;
+//             -o-text-overflow: ellipsis;
+//             text-overflow: ellipsis;
+//         }
+//         .link-title {
+//             display: block;
+//         }
+//     }
+//     .c-titleChapter {
+//         width: 25%;
+//     }
+//     .c-time {
+//         text-align: right;
+//     }
+//     .item-name {
+//         white-space: nowrap;
+//         font-size: 16px;
+//         font-weight: 500;
+//     }
+// }

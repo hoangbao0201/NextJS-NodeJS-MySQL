@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import connectMySQL from "../library/connectMySQL";
+import pool from "../library/connectMySQL";
 
 export const checkCreateChapter = async (
     req: Request,
@@ -16,7 +16,7 @@ export const checkCreateChapter = async (
             return;
         }
         
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const qCheckCreateChapter = `
             SELECT novelId, title FROM novels

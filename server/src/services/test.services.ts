@@ -1,9 +1,9 @@
-import connectMySQL from "../library/connectMySQL";
+import pool from "../library/connectMySQL";
 
 export const testDemoHandle = async () => {
     try {
 
-        const connection = await connectMySQL();
+        const connection = await pool.getConnection();
 
         const q = `
             INSERT INTO USERS(name, username, email, password)
